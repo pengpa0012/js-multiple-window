@@ -1,8 +1,5 @@
-// save window position to localstorage
-// add storage listener to know other window position
 // get relative position to each other
 // point arrow or other illustration
-// clear localstorage on window close
 
 function init() {
   let winPos = {
@@ -10,16 +7,16 @@ function init() {
     y: undefined,
     id: Date.now()
   }
-  const allWin = JSON.parse(localStorage.getItem("windows")) || []
+  const circle = document.querySelector(".circle")
 
   setInterval(() => {
+    const allWin = JSON.parse(localStorage.getItem("windows")) || []
+    const newWin = [...allWin]
     winPos = {
       ...winPos,
       x: window.screenLeft,
       y: window.screenTop,
     }
-
-    const newWin = [...allWin]
 
     if(newWin.find(el => el.id == winPos.id)) {
       const selectWin = newWin.find(el => el.id == winPos.id)
@@ -33,8 +30,11 @@ function init() {
   }, 1000)
   
   addEventListener("beforeunload", () => {
-    allWin.splice(winPos.id, 1)
-    localStorage.setItem("windows", JSON.stringify(allWin))
+    const allWin = JSON.parse(localStorage.getItem("windows")) || []
+    const newWin = [...allWin]
+    const filteredWin = newWin.filter(el => el.id !== winPos.id)
+
+    localStorage.setItem("windows", JSON.stringify(filteredWin))
   })
 
   addEventListener("storage", () => {
