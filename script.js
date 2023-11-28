@@ -2,7 +2,7 @@
 // point arrow or other illustration
 
 function midpoint([x1, y1], [x2, y2]) { 
-  return [(x1 + x2) / 2, (y1 + y2) / 2]
+  return [x1 - x2, y1 - y2]
 }
 
 function init() {
@@ -23,21 +23,26 @@ function init() {
       x: window.screenLeft,
       y: window.screenTop,
     }
-    console.log(otherWin)
 
-    console.log("MIDPOINT", midpoint([winPos.x, winPos.y], [otherWin.x, otherWin.y]))
+    // Adjust calculation
+    if(newWin.length > 1) {
+      const [x, y] = midpoint([winPos.x, winPos.y], [otherWin.x, otherWin.y])
+      console.log(x, y, circle)
+      circle.style.top = `${y}px`
+      circle.style.left = `${x}px`
+    }
+   
 
-    
     if(newWin.find(el => el.id == winPos.id)) {
       const selectWin = newWin.find(el => el.id == winPos.id)
       selectWin.x = winPos.x
       selectWin.y = winPos.y
-    } else {
+    } else { 
       newWin.push(winPos)
     } 
 
     localStorage.setItem("windows", JSON.stringify(newWin))
-  }, 1000)
+  }, 500)
   
   addEventListener("beforeunload", () => {
     const allWin = JSON.parse(localStorage.getItem("windows")) || []
