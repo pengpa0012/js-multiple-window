@@ -27,9 +27,15 @@ function init() {
     // Adjust calculation
     if(newWin.length > 1) {
       const [x, y] = midpoint([winPos.x, winPos.y], [otherWin.x, otherWin.y])
-      console.log(x, y, circle)
-      circle.style.top = `${y}px`
-      circle.style.left = `${x}px`
+      console.log(x, y, window.innerHeight, window.innerWidth)
+      // if(x > window.innerWidth || x < window.innerWidth || y > window.innerHeight || y < window.innerHeight) return
+      if (x < 0) { 
+        circle.style.left = `${Math.abs(x * 0.2)}px`
+        circle.style.top = `${Math.abs(y * 0.2)}px`
+      } else {
+        circle.style.left = `${(x * 0.2) * -1}px`
+        circle.style.top = `${(y * 0.2) * -1}px`
+      }
     }
    
 
